@@ -4,13 +4,15 @@
 class UserAccount
 {
 	private:
-		int id;
 		std::string userName;
 		std::string password;
 
 	public: 
+		int id;
 		UserAccount(const int newID, const std::string newUser, const std::string newPassword);
-		bool Login(const std::string& enteredUserName, const std::string& enteredPassword);
+		bool Login(const std::string& enteredUserName, const std::string& enteredPassword) {
+			return enteredUserName == userName && enteredPassword == password;
+		}
 };
 
 #endif
