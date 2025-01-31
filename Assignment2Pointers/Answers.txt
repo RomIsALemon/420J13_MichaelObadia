@@ -1,0 +1,62 @@
+Question 1: 
+
+int a = 10;
+int* p = &a;
+*p = 20;
+std::cout << a;
+
+Output: 20
+Will it compile: Yes
+Memory Leak/Dangling Pointer: No
+
+Question 2: 
+int* p = nullptr;
+*p = 5;
+
+Output: (nothing)
+Will it compile: Yes
+Memory Leak/Dangling Pointer: No
+
+Question 2.1
+int a = 5;
+int* p = &a;
+int b = *p;
+*p = 10;
+std::cout << a << " " << b;
+
+Output: 10 5
+Will it compile: Yes
+Memory Leak/Dangling Pointer: No
+
+
+Question 3
+int* p = new int(5);
+delete p;
+*p = 10;
+
+Output: (nothing)
+Will it compile: Yes
+Memory Leak/Dangling Pointer: Dangling Pointer *p is trying to manipulate something that is not defined.
+
+Question 4
+int a = 10;
+float* p = (float*)&a;
+std::cout << *p;
+
+Output: 4013e-44
+Will it compile: Yes
+Memory Leak/Dangling Pointer: No
+
+Question 5
+int a = 5;
+int* p = &a;
+p = nullptr;
+*p = 10;
+
+Output:
+Will it compile:
+Memory Leak/Dangling Pointer:
+
+
+
+
