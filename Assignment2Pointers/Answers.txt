@@ -53,9 +53,298 @@ int* p = &a;
 p = nullptr;
 *p = 10;
 
-Output:
-Will it compile:
-Memory Leak/Dangling Pointer:
+Output:(nothing)
+Will it compile: Yes
+Memory Leak/Dangling Pointer: None
+
+Question 6
+int* p = new int(5);
+int* q = p;
+delete p;
+
+Output: (nothing)
+Will it compile: Yes
+Memory Leak/Dangling Pointer: q is a dangling pointer to p, which was deallocated
+
+Question 7
+int* p = new int(5);
+p = new int(10);
+
+Output: (nothing)
+Will it compile: Yes
+Memory Leak/Dangling Pointer: Memory leak
+
+Question 8
+
+void func(int* p) {
+    *p = 10;
+}
+
+int main() {
+    int a = 5;
+    func(&a);
+    std::cout << a;
+}
+
+Output: 10
+Will it compile: Yes
+Memory Leak/Dangling Pointer: None
+
+Question 9
+
+int* func() {
+    int a = 5;
+    return &a;
+}
+
+int main() {
+    int* p = func();
+    std::cout << *p;
+}
+
+Output:5
+Will it compile: Yes
+Memory Leak/Dangling Pointer: None
+
+Question 10
+
+void func(int* p) {
+    int b = 10;
+    p = &b;
+}
+
+int main() {
+    int a = 5;
+    int* p = &a;
+    func(p);
+    std::cout << *p;
+}
+
+Output: 5
+Will it compile: Yes
+Memory Leak/Dangling Pointer: None
+
+Question 11
+
+void func(int*& p) {
+    p = nullptr;
+}
+
+int main() {
+    int a = 5;
+    int* p = &a;
+    func(p);
+    std::cout << *p;
+}
+
+Output: (nothing)
+Will it compile: Yes
+Memory Leak/Dangling Pointer: No
+
+Question 12
+
+int* func() {
+    return new int(5);
+}
+
+int main() {
+    int* p = func();
+    delete p;
+    std::cout << *p;
+}
+
+Output: (nothing)
+Will it compile: Yes
+Memory Leak/Dangling Pointer: p is a dangling pointer
+
+Question 13
+
+void func() {
+    int* p = new int(5);
+}
+
+int main() {
+    func();
+}
+
+Output: (nothing)
+Will it compile: Yes
+Memory Leak/Dangling Pointer: Memory leak, because the pointer is not used or deleted
+
+Question 14
+
+int a = 5;
+int* p = &a;
+int** pp = &p;
+std::cout << **pp;
+
+Output: 5
+Will it compile: Yes
+Memory Leak/Dangling Pointer: None
+
+Question 15
+
+int a = 5;
+int* p = nullptr;
+int** pp = &p;
+**pp = a;
+
+Output: (nothing)
+Will it compile: Yes
+Memory Leak/Dangling Pointer: None
+
+Question 16
+
+int** pp = nullptr;
+**pp = new int(5);
+
+Output: N/A
+Will it compile: No
+Memory Leak/Dangling Pointer: N/A
+
+Question 17
+
+class Test {
+    int* data;
+public:
+    Test(int value) {
+        data = new int(value);
+    }
+    ~Test() {
+        delete data;
+    }
+    void setValue(int value) {
+        *data = value;
+    }
+    int getValue() {
+        return *data;
+    }
+};
+
+int main() {
+    Test t1(5);
+    Test* t2 = new Test(10);
+    t1.setValue(15);
+    t2->setValue(20);
+    std::cout << t1.getValue() << " " << t2->getValue();
+    delete t2;
+}
+
+Output:15 20
+Will it compile: Yes
+Memory Leak/Dangling Pointer: None
+
+Question 18
+
+class A {
+    int* x;
+public:
+    A(int value) {
+        x = new int(value);
+    }
+    ~A() {
+        delete x;
+    }
+};
+
+class B {
+    A* obj;
+public:
+    B(int value) {
+        obj = new A(value);
+    }
+    ~B() {
+        delete obj;
+    }
+};
+
+int main() {
+    B b1(5);
+    B* b2 = new B(10);
+    delete b2;
+}
+
+Output: (nothing)
+Will it compile: Yes
+Memory Leak/Dangling Pointer: None
+
+Question 19
+
+class Item {
+    std::string* description;
+public:
+    Item(const std::string& desc) {
+        description = new std::string(desc);
+    }
+    ~Item() {
+        delete description;
+    }
+    void printDescription() {
+        std::cout << "Item: " << *description << std::endl;
+    }
+};
+
+class Player {
+    Item* equippedItem;
+public:
+    Player(Item* item) : equippedItem(item) {}
+    ~Player() {
+        delete equippedItem; 
+    }
+    void printEquippedItem() {
+        equippedItem->printDescription();
+    }
+};
+
+int main() {
+		if(true)
+		{
+		    Item* potion = new Item("Health Potion");
+		    Player player1(potion);
+		    player1.printEquippedItem();
+
+		    delete potion;  // What happens here?
+    }
+    return 0;
+}
+
+
+
+There is an issue with the code, identify and explain the issue:
+There is no need to manually write delete potion when both the player and potion classes have a destructor.
+
+Question 20
+
+class Enemy {
+    int* health;
+public:
+    Enemy(int hp) {
+        health = new int(hp);
+    }
+    ~Enemy() {
+        delete health;
+    }
+    void attack() {
+        *health -= 10;
+        std::cout << "Enemy health: " << *health << std::endl;
+    }
+};
+
+void spawnEnemy(Enemy* enemy) {
+    enemy = new Enemy(100);
+}
+
+int main() {
+    Enemy* orc = nullptr;
+    spawnEnemy(orc);
+    orc->attack();
+    delete orc;
+    return 0;
+}
+
+
+There is an issue with the code, identify and explain the issue:
+Only the value of orc is being passed in spawnEnemy, not by reference so it will not be properly initialized.
 
 
 
