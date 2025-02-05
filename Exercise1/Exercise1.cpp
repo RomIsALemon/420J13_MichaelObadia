@@ -4,15 +4,15 @@
 #include <iostream>
 
 using namespace std;
+struct Course {
+    std::string name;
+    float midterm;
+    float exam;
+    float project;
+};
 
 int main()
 {
-    struct Course {
-        std::string name;
-        float midterm;
-        float exam;
-        float project;
-    };
 
     const int courseAmount = 3;
     Course courseArr[courseAmount];
@@ -20,10 +20,12 @@ int main()
     courseArr[0].midterm = 40;
     courseArr[0].exam = 50;
     courseArr[0].project = 10;
+
     courseArr[1].name = "Math";
     courseArr[1].midterm = 30;
     courseArr[1].exam = 70;
     courseArr[1].project = 0;
+
     courseArr[2].name = "History";
     courseArr[2].midterm = 50;
     courseArr[2].exam = 30;
