@@ -73,7 +73,7 @@ int main()
 	for (int i = 0; i < students.size(); i++) {
 		cout << "Enter data for student " << i + 1 << endl;
 		cout << "Name: " << endl;
-		cin >> students[i].name;
+		getline(cin, students[i].name);
 		cout << "ID: " << endl;
 		cin >> students[i].id;
 		int subjects = students[i].grades->size();
