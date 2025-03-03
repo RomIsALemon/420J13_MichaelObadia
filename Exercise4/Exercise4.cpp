@@ -36,7 +36,7 @@ public:
     virtual void displayVehicleInfo() = 0;
 };
 
-class Car : Vehicle {
+class Car : public Vehicle {
 private:
     int numDoors;
 public:
@@ -48,7 +48,7 @@ public:
     }
 };
 
-class Motorcycle : Vehicle {
+class Motorcycle : public Vehicle {
 private:
     bool hasSideCar;
 public:
@@ -63,9 +63,9 @@ public:
 
 template <typename T> class Garage {
 private:
-    Vehicle<T>* storedV;
+    Vehicle* storedV = nullptr;
 public:
-    void storeVehicle(T v) {
+    void storeVehicle(T* v) {
         storedV = v;
     }
     void showVehicle() {
@@ -73,7 +73,7 @@ public:
             cout << "No vehicles in the garage." << endl;
         }
         else {
-            storedV.displayVehicleInfo();
+            storedV->displayVehicleInfo();
         }
     }
 };
@@ -88,5 +88,15 @@ int main()
     cout << SumArray(arr3, 5) << endl;*/
 
     Car c("Toyota", 4);
+    Motorcycle m("Harley", true);
+    Garage<Car> g1;
+    Garage<Motorcycle> g2;
+    g1.showVehicle();
+    g1.storeVehicle(&c);
+    g1.showVehicle();
+    g2.showVehicle();
+    g2.storeVehicle(&m);
+    g2.showVehicle();
+    
 }
 
