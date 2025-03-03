@@ -9,10 +9,21 @@ using namespace std;
 struct Student {
 	string name;
 	int id;
-	vector<double>* grades;
+	//vector<double>* grades;
+	double* grades;
 };
 
-vector<Student> makeStudentList() {
+void gradesToString(Student s, int size) {
+	string grades = "";
+	cout << "Student " << s.name << ", ID " << s.id << endl;
+	for (int i = 0; i < size; i++) {
+		cout << "Subject " << (i+1) << ": " << s.grades[i] << endl;
+	}
+}
+
+
+int main()
+{
 	int studentNum;
 	int subjectNum;
 	while (true) {
@@ -41,53 +52,28 @@ vector<Student> makeStudentList() {
 			break;
 		}
 	}
-	vector<Student> studentList;
-	studentList.resize(studentNum);
-	for (int i = 0; i < studentList.size(); i++) {
-		studentList[i].grades = new vector<double>;
-		studentList[i].grades->resize(subjectNum);
-		studentList[i].grades->reserve(subjectNum);
+	Student* students = new Student[studentNum];
+	for (int i = 0; i < studentNum; i++) {
+		students[i].grades = new double[subjectNum];
 	}
 	cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	return studentList;
-}
-
-string gradesToString(Student s) {
-	string grades = "";
-	for (int i = 0; i < s.grades->size(); i++) {
-		grades = grades + to_string((*s.grades)[i]) + " ";
-	}
-	return grades;
-}
-
-string toString(Student s) {
-
-	return "Name: " + s.name + ", ID: " + to_string(s.id) + ", Grades: " + gradesToString(s) + "\n";
-}
-
-int main()
-{
-	vector<Student> students = makeStudentList();
-	cout << "Array size " << students.size() << endl;
-	for (int i = 0; i < students.size(); i++) {
+	for (int i = 0; i < studentNum; i++) {
 		cout << "Enter data for student " << i + 1 << endl;
 		cout << "Name: " << endl;
 		getline(cin, students[i].name);
 		cout << "ID: " << endl;
 		cin >> students[i].id;
-		int subjects = students[i].grades->size();
-		for (int j = 0; j < subjects; j++) {
+		for (int j = 0; j < subjectNum; j++) {
 			double grade;
 			cout << "Enter grade for subject " << j + 1 << endl;
 			cin >> grade;
-			students[i].grades->insert(students[i].grades->begin(),grade);
+			students[i].grades[j] = grade;
 		}
-		students[i].grades->resize(subjects);
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 	}
-	cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	for (int i = 0; i < students.size(); i++) {
-		cout << toString(students[i]);
+	for (int i = 0; i < studentNum; i++) {
+		gradesToString(students[i], subjectNum);
 	}
 }
